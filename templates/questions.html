@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Pertanyaan Perawatan Tanah</title>
+
+  <!-- FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- ICON -->
+  <script src="https://kit.fontawesome.com/7a4b62b0a4.js" crossorigin="anonymous"></script>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins', sans-serif;
+    }
+
+    html{
+        scroll-behavior:smooth;
+    }
+
+    body{
+    min-height:100vh;
+    background: linear-gradient(135deg, #0f172a, #14213d);
+    color:white;
+    position:relative;
+    overflow-x:hidden;
+    }
+
+    /* BACKGROUND */
+
+    .circle1,
+    .circle2{
+
+      position:absolute;
+      border-radius:50%;
+      filter:blur(100px);
+      z-index:-1;
+    }
+
+    .circle1{
+
+      width:300px;
+      height:300px;
+
+      background:#16a34a;
+
+      top:-100px;
+      left:-100px;
+
+      opacity:0.2;
+    }
+
+    .circle2{
+
+      width:350px;
+      height:350px;
+
+      background:#60a5fa;
+
+      bottom:-150px;
+      right:-100px;
+
+      opacity:0.2;
+    }
+
+    /* NAVBAR */
+
+    nav{
+
+      width:100%;
+      padding:20px 8%;
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      background:rgba(255,255,255,0.05);
+
+      backdrop-filter: blur(10px);
+
+      border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+
+    .logo{
+
+      font-size:28px;
+      font-weight:700;
+      color:#7CFFB2;
+    }
+
+    .logo span{
+      color:white;
+    }
+
+    .nav-links{
+
+      display:flex;
+      gap:30px;
+    }
+
+    .nav-links a{
+
+      text-decoration:none;
+      color:white;
+
+      font-weight:500;
+
+      transition:0.3s;
+    }
+
+    .nav-links a:hover{
+      color:#7CFFB2;
+    }
+
+    /* MAIN */
+
+    .container{
+
+      width:100%;
+      min-height:calc(100vh - 90px);
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      padding:30px;
+    }
+
+    /* CARD */
+
+    .question-card{
+
+      width:100%;
+      max-width:780px;
+
+      background:white;
+      color:#111827;
+
+      border-radius:35px;
+
+      padding:50px;
+
+      box-shadow:0 15px 50px rgba(0,0,0,0.3);
+
+      position:relative;
+    }
+
+    /* STEP */
+
+    .step-info{
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      margin-bottom:20px;
+    }
+
+    .step-text{
+
+      color:#64748b;
+      font-size:15px;
+      font-weight:500;
+    }
+
+    /* PROGRESS */
+
+    .progress-container{
+
+      width:100%;
+      height:12px;
+
+      background:#e2e8f0;
+
+      border-radius:20px;
+
+      overflow:hidden;
+
+      margin-bottom:40px;
+    }
+
+    .progress-bar{
+
+      width:20%;
+      height:100%;
+
+      background:linear-gradient(to right, #16a34a, #4ade80);
+
+      border-radius:20px;
+
+      transition:0.3s;
+    }
+
+    /* ICON */
+
+    .question-icon{
+
+      width:90px;
+      height:90px;
+
+      border-radius:50%;
+
+      background:#dcfce7;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      margin-bottom:30px;
+    }
+
+    .question-icon i{
+
+      font-size:38px;
+      color:#16a34a;
+    }
+
+    /* TITLE */
+
+    .question-title{
+
+      font-size:38px;
+      line-height:1.4;
+
+      margin-bottom:15px;
+    }
+
+    .question-desc{
+
+      color:#64748b;
+
+      line-height:1.8;
+
+      margin-bottom:40px;
+    }
+
+    /* INPUT */
+
+    .input-group{
+
+      margin-bottom:35px;
+    }
+
+    .input-group label{
+
+      display:block;
+
+      margin-bottom:12px;
+
+      font-weight:600;
+    }
+
+    .input-group select,
+    .input-group input{
+
+      width:100%;
+
+      padding:18px 20px;
+
+      border-radius:18px;
+
+      border:2px solid #e2e8f0;
+
+      outline:none;
+
+      font-size:16px;
+
+      transition:0.3s;
+    }
+
+    .input-group select:focus,
+    .input-group input:focus{
+
+      border-color:#22c55e;
+
+      box-shadow:0 0 0 5px rgba(34,197,94,0.15);
+    }
+
+    /* BUTTON */
+
+    .button-area{
+
+      width:100%;
+
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+    }
+
+    .btn{
+
+      flex:1;
+
+      padding:18px;
+
+      border:none;
+
+      border-radius:18px;
+
+      font-size:17px;
+      font-weight:600;
+
+      cursor:pointer;
+
+      transition:0.3s;
+
+      text-decoration:none;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .back-btn{
+
+      background:#e2e8f0;
+      color:#111827;
+    }
+
+    .back-btn:hover{
+      background:#cbd5e1;
+    }
+
+    .next-btn{
+
+      background:linear-gradient(to right, #16a34a, #22c55e);
+
+      color:white;
+
+      box-shadow:0 10px 25px rgba(34,197,94,0.3);
+    }
+
+    .next-btn:hover{
+      transform:translateY(-4px);
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:768px){
+
+      .question-card{
+        padding:35px 25px;
+      }
+
+      .question-title{
+        font-size:28px;
+      }
+
+      .button-area{
+        flex-direction:column;
+      }
+
+      .nav-links{
+        display:none;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- BG -->
+
+  <div class="circle1"></div>
+  <div class="circle2"></div>
+
+  <!-- NAVBAR -->
+
+  <nav>
+
+    <div class="logo">
+      Tani<span>Smart</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Monitoring</a>
+      <a href="#">About</a>
+    </div>
+
+  </nav>
+
+  <!-- MAIN -->
+
+  <div class="container">
+
+    <div class="question-card">
+
+      <!-- STEP -->
+
+      <div class="step-info">
+
+        <div class="step-text" id="stepText">
+          Pertanyaan 1 dari 5
+        </div>
+
+      </div>
+
+      <!-- PROGRESS -->
+
+      <div class="progress-container">
+
+        <div class="progress-bar" id="progressBar"></div>
+
+      </div>
+
+      <!-- ICON -->
+
+      <div class="question-icon">
+
+        <i class="fa-solid fa-seedling"></i>
+
+      </div>
+
+      <!-- TITLE -->
+
+      <h1 class="question-title" id="questionTitle">
+        Jenis pupuk apa yang biasanya digunakan?
+      </h1>
+
+      <p class="question-desc">
+        Informasi ini membantu sistem memberikan
+        rekomendasi perawatan tanah yang lebih akurat.
+      </p>
+
+      <!-- INPUT -->
+
+      <div class="input-group">
+
+        <label id="inputLabel">
+          Pilih jenis pupuk
+        </label>
+
+        <select id="questionInput">
+
+          <option>
+            -- Pilih Jawaban --
+          </option>
+
+        </select>
+
+      </div>
+
+      <!-- BUTTON -->
+
+      <div class="button-area">
+
+        <a href="/" class="btn back-btn" id="backBtn">
+
+          Kembali
+
+        </a>
+
+        <button type="button" class="btn next-btn" id="nextBtn">
+
+        Selanjutnya
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- SCRIPT -->
+
+  <script>
+
+    const questions = [
+
+      {
+        title: "Jenis pupuk apa yang biasanya digunakan?",
+        label: "Pilih jenis pupuk",
+        options: [
+          "Pupuk Organik",
+          "Pupuk Kompos",
+          "Pupuk NPK",
+          "Pupuk Urea",
+          "Pupuk Kandang"
+        ]
+      },
+
+      {
+        title: "Seberapa sering melakukan pemupukan?",
+        label: "Pilih intensitas pemupukan",
+        options: [
+          "1 kali seminggu",
+          "2 kali seminggu",
+          "1 kali sebulan",
+          "Jarang",
+          "Tidak tentu"
+        ]
+      },
+
+      {
+        title: "Apakah pernah memberikan vitamin tanaman?",
+        label: "Pilih jawaban",
+        options: [
+          "Ya",
+          "Tidak"
+        ]
+      },
+
+      {
+        title: "Vitamin apa yang digunakan?",
+        label: "Pilih jenis vitamin",
+        options: [
+          "Vitamin B1",
+          "Vitamin A",
+          "ZPT",
+          "Pupuk Cair",
+          "Tidak Menggunakan"
+        ]
+      },
+
+      {
+        title: "Bagaimana intensitas penyiraman tanaman?",
+        label: "Pilih intensitas penyiraman",
+        options: [
+          "1 kali sehari",
+          "2 kali sehari",
+          "3 kali sehari",
+          "Jarang",
+          "Tidak tentu"
+        ]
+      }
+
+    ];
+
+    let currentQuestion = 0;
+
+    const questionTitle = document.getElementById("questionTitle");
+    const inputLabel = document.getElementById("inputLabel");
+    const questionInput = document.getElementById("questionInput");
+    const stepText = document.getElementById("stepText");
+    const progressBar = document.getElementById("progressBar");
+    const nextBtn = document.getElementById("nextBtn");
+
+    function loadQuestion() {
+
+      const q = questions[currentQuestion];
+
+      questionTitle.textContent = q.title;
+      inputLabel.textContent = q.label;
+
+      stepText.textContent =
+        `Pertanyaan ${currentQuestion + 1} dari ${questions.length}`;
+
+      progressBar.style.width =
+        `${((currentQuestion + 1) / questions.length) * 100}%`;
+
+      questionInput.innerHTML =
+        `<option>-- Pilih Jawaban --</option>`;
+
+      q.options.forEach(option => {
+
+        questionInput.innerHTML +=
+          `<option>${option}</option>`;
+
+      });
+
+      if(currentQuestion === questions.length - 1){
+
+        nextBtn.textContent = "Lihat Rekomendasi";
+
+      }else{
+
+        nextBtn.textContent = "Selanjutnya";
+      }
+
+    }
+
+    nextBtn.addEventListener("click", () => {
+
+      if(currentQuestion < questions.length - 1){
+
+        currentQuestion++;
+        loadQuestion();
+
+      }else{
+
+        window.location.href = "Rekomendasi_yes.html";
+      }
+
+    });
+
+    loadQuestion();
+
+  </script>
+
+</body>
+
+</html>
