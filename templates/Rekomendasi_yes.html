@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hasil Rekomendasi Tanah</title>
+
+  <!-- FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- ICON -->
+  <script src="https://kit.fontawesome.com/7a4b62b0a4.js" crossorigin="anonymous"></script>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins', sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      background: linear-gradient(135deg, #0f172a, #14213d);
+      color:white;
+      overflow-x:hidden;
+    }
+
+    /* NAVBAR */
+
+    nav{
+      width:100%;
+      padding:20px 8%;
+
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+
+      background:rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+
+      border-bottom:1px solid rgba(255,255,255,0.1);
+    }
+
+    .logo{
+      font-size:28px;
+      font-weight:700;
+      color:#7CFFB2;
+    }
+
+    .logo span{
+      color:white;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:30px;
+    }
+
+    .nav-links a{
+      text-decoration:none;
+      color:white;
+      font-weight:500;
+      transition:0.3s;
+    }
+
+    .nav-links a:hover{
+      color:#7CFFB2;
+    }
+
+    /* MAIN */
+
+    .container{
+      width:100%;
+      padding:50px 8%;
+    }
+
+    /* HEADER */
+
+    .header{
+      text-align:center;
+      margin-bottom:50px;
+    }
+
+    .header h1{
+      font-size:42px;
+      margin-bottom:15px;
+    }
+
+    .header p{
+      color:#cbd5e1;
+      font-size:17px;
+    }
+
+    /* SENSOR */
+
+    .sensor-wrapper{
+
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+
+      gap:25px;
+
+      margin-bottom:60px;
+    }
+
+    .sensor-card{
+
+      background:rgba(255,255,255,0.08);
+
+      border:1px solid rgba(255,255,255,0.1);
+
+      backdrop-filter: blur(10px);
+
+      border-radius:25px;
+
+      padding:30px 20px;
+
+      text-align:center;
+
+      transition:0.3s;
+
+      box-shadow:0 8px 30px rgba(0,0,0,0.2);
+    }
+
+    .sensor-card:hover{
+      transform:translateY(-8px);
+    }
+
+    .sensor-card i{
+      font-size:38px;
+      margin-bottom:20px;
+    }
+
+    .sensor-title{
+      font-size:17px;
+      margin-bottom:10px;
+      color:#e2e8f0;
+    }
+
+    .sensor-value{
+      font-size:38px;
+      font-weight:700;
+      margin-bottom:12px;
+    }
+
+    .sensor-status{
+      display:inline-block;
+
+      padding:8px 18px;
+
+      border-radius:20px;
+
+      font-size:14px;
+      font-weight:600;
+    }
+
+    /* COLORS */
+
+    .good{
+      background:#dcfce7;
+      color:#166534;
+    }
+
+    .warning{
+      background:#fef3c7;
+      color:#92400e;
+    }
+
+    .danger{
+      background:#ffe4e6;
+      color:#be123c;
+    }
+
+    /* ANALYSIS */
+
+    .analysis-wrapper{
+
+      display:grid;
+      grid-template-columns:1fr 1.3fr;
+
+      gap:35px;
+
+      margin-bottom:60px;
+    }
+
+    .history-card,
+    .recommendation-card{
+
+      background:white;
+      color:#111827;
+
+      border-radius:30px;
+
+      padding:35px;
+
+      box-shadow:0 15px 40px rgba(0,0,0,0.25);
+    }
+
+    .card-title{
+
+      display:flex;
+      align-items:center;
+      gap:15px;
+
+      font-size:24px;
+      margin-bottom:30px;
+    }
+
+    .card-title i{
+      color:#16a34a;
+    }
+
+    /* HISTORY */
+
+    .history-list{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .history-item{
+
+      background:#f8fafc;
+
+      border-radius:18px;
+
+      padding:18px 20px;
+
+      border:1px solid #e2e8f0;
+    }
+
+    .history-label{
+      font-size:14px;
+      color:#64748b;
+      margin-bottom:6px;
+    }
+
+    .history-value{
+      font-size:18px;
+      font-weight:600;
+    }
+
+    /* RECOMMENDATION */
+
+    .recommendation-box{
+
+      background:linear-gradient(to right, #dcfce7, #f0fdf4);
+
+      border-left:6px solid #16a34a;
+
+      padding:25px;
+
+      border-radius:20px;
+
+      margin-bottom:25px;
+    }
+
+    .recommendation-box h3{
+
+      color:#166534;
+      margin-bottom:12px;
+      font-size:22px;
+    }
+
+    .recommendation-box p{
+
+      line-height:1.8;
+      color:#334155;
+      font-size:16px;
+    }
+
+    .action-list{
+
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .action-item{
+
+      display:flex;
+      gap:15px;
+
+      align-items:flex-start;
+
+      background:#f8fafc;
+
+      border-radius:18px;
+
+      padding:18px;
+
+      border:1px solid #e2e8f0;
+    }
+
+    .action-item i{
+
+      color:#16a34a;
+      font-size:20px;
+      margin-top:3px;
+    }
+
+    .action-item h4{
+      margin-bottom:5px;
+      font-size:17px;
+    }
+
+    .action-item p{
+      color:#64748b;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    /* BUTTON */
+
+    .button-area{
+      width:100%;
+      display:flex;
+      justify-content:center;
+      margin-top:40px;
+    }
+
+    .btn{
+
+      padding:18px 35px;
+
+      border:none;
+
+      border-radius:18px;
+
+      background:linear-gradient(to right, #16a34a, #22c55e);
+
+      color:white;
+
+      font-size:17px;
+      font-weight:600;
+
+      cursor:pointer;
+
+      transition:0.3s;
+
+      box-shadow:0 10px 25px rgba(34,197,94,0.3);
+    }
+
+    .btn:hover{
+      transform:translateY(-4px);
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:1000px){
+
+      .analysis-wrapper{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+    @media(max-width:768px){
+
+      .header h1{
+        font-size:32px;
+      }
+
+      .nav-links{
+        display:none;
+      }
+
+      .history-card,
+      .recommendation-card{
+        padding:25px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+
+  <nav>
+
+    <div class="logo">
+      Tani<span>Smart</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Monitoring</a>
+      <a href="#">About</a>
+    </div>
+
+  </nav>
+
+  <!-- MAIN -->
+
+  <div class="container">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+      <h1>
+        Hasil Analisis Tanah
+      </h1>
+
+      <p>
+        Rekomendasi dibuat berdasarkan data sensor dan
+        riwayat perawatan tanah yang telah diberikan.
+      </p>
+
+    </div>
+
+    <!-- SENSOR -->
+
+    <div class="sensor-wrapper">
+
+      <!-- PH -->
+
+      <div class="sensor-card">
+
+        <i class="fa-solid fa-droplet"></i>
+
+        <div class="sensor-title">
+          pH Tanah
+        </div>
+
+        <div class="sensor-value">
+          5.2
+        </div>
+
+        <div class="sensor-status warning">
+          Sedikit Asam
+        </div>
+
+      </div>
+
+      <!-- TEMP -->
+
+      <div class="sensor-card">
+
+        <i class="fa-solid fa-temperature-three-quarters"></i>
+
+        <div class="sensor-title">
+          Suhu
+        </div>
+
+        <div class="sensor-value">
+          37°C
+        </div>
+
+        <div class="sensor-status danger">
+          Tinggi
+        </div>
+
+      </div>
+
+      <!-- SOIL -->
+
+      <div class="sensor-card">
+
+        <i class="fa-solid fa-water"></i>
+
+        <div class="sensor-title">
+          Kelembaban Tanah
+        </div>
+
+        <div class="sensor-value">
+          21%
+        </div>
+
+        <div class="sensor-status danger">
+          Rendah
+        </div>
+
+      </div>
+
+      <!-- LIGHT -->
+
+      <div class="sensor-card">
+
+        <i class="fa-solid fa-sun"></i>
+
+        <div class="sensor-title">
+          Intensitas Cahaya
+        </div>
+
+        <div class="sensor-value">
+          860
+        </div>
+
+        <div class="sensor-status good">
+          Normal
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- ANALYSIS -->
+
+    <div class="analysis-wrapper">
+
+      <!-- HISTORY -->
+
+      <div class="history-card">
+
+        <div class="card-title">
+
+          <i class="fa-solid fa-clock-rotate-left"></i>
+
+          <h3>Riwayat Perawatan</h3>
+
+        </div>
+
+        <div class="history-list">
+
+          <div class="history-item">
+
+            <div class="history-label">
+              Jenis Pupuk
+            </div>
+
+            <div class="history-value">
+              Pupuk NPK
+            </div>
+
+          </div>
+
+          <div class="history-item">
+
+            <div class="history-label">
+              Intensitas Pemupukan
+            </div>
+
+            <div class="history-value">
+              1 Kali / Minggu
+            </div>
+
+          </div>
+
+          <div class="history-item">
+
+            <div class="history-label">
+              Vitamin Tanaman
+            </div>
+
+            <div class="history-value">
+              Vitamin B1
+            </div>
+
+          </div>
+
+          <div class="history-item">
+
+            <div class="history-label">
+              Intensitas Penyiraman
+            </div>
+
+            <div class="history-value">
+              1 Kali / Hari
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RECOMMENDATION -->
+
+      <div class="recommendation-card">
+
+        <div class="card-title">
+
+          <i class="fa-solid fa-leaf"></i>
+
+          <h3>Rekomendasi Sistem</h3>
+
+        </div>
+
+        <!-- ANALYSIS TEXT -->
+
+        <div class="recommendation-box">
+
+          <h3>
+            Kondisi Tanah Terdeteksi Kurang Optimal
+          </h3>
+
+          <p>
+            Berdasarkan data sensor dan riwayat perawatan,
+            tanah terdeteksi memiliki tingkat kelembaban rendah
+            dengan suhu lingkungan yang cukup tinggi.
+            Penggunaan pupuk NPK masih cukup baik,
+            namun intensitas penyiraman perlu ditingkatkan
+            agar kondisi tanah tetap stabil dan tanaman
+            dapat tumbuh dengan optimal.
+          </p>
+
+        </div>
+
+        <!-- ACTION -->
+
+        <div class="action-list">
+
+          <div class="action-item">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            <div>
+
+              <h4>
+                Tingkatkan Penyiraman
+              </h4>
+
+              <p>
+                Disarankan melakukan penyiraman
+                sebanyak 2 kali sehari pada pagi
+                dan sore hari.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="action-item">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            <div>
+
+              <h4>
+                Tambahkan Pupuk Organik
+              </h4>
+
+              <p>
+                Pupuk organik membantu menjaga
+                kelembaban tanah dan memperbaiki
+                struktur tanah.
+              </p>
+
+            </div>
+
+          </div>
+
+          <div class="action-item">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            <div>
+
+              <h4>
+                Kurangi Paparan Panas Berlebih
+              </h4>
+
+              <p>
+                Gunakan peneduh atau lakukan
+                penyiraman tambahan saat cuaca
+                terlalu panas.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- BUTTON -->
+
+    <div class="button-area">
+
+      <button class="btn">
+
+        Cek Ulang Kondisi Tanah
+
+      </button>
+
+    </div>
+
+  </div>
+
+</body>
+
+</html>
