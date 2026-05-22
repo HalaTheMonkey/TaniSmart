@@ -6,12 +6,6 @@ from flask import jsonify
 import google.generativeai as genai
 
 # =========================
-# FLASK
-# =========================
-
-app = Flask(__name__)
-
-# =========================
 # GEMINI API
 # =========================
 
@@ -20,25 +14,34 @@ genai.configure(
 )
 
 model = genai.GenerativeModel(
-     "gemini-2.5-flash"
+    "gemini-2.5-flash"
 )
 
 # =========================
-# TEMPORARY SENSOR STORAGE
+# FLASK
+# =========================
+
+app = Flask(__name__)
+
+# =========================
+# TEMP SENSOR DATA
 # =========================
 
 sensor_data = {
 
-    "ph": 6.5,
-    "temperature": 37,
-    "soil_moisture": 18,
-    "air_humidity": 62,
-    "light": 820
+    "ph": 5.2,
 
+    "temperature": 37,
+
+    "soil_moisture": 21,
+
+    "air_humidity": 62,
+
+    "light": 860
 }
 
 # =========================
-# HOME PAGE
+# HOME
 # =========================
 
 @app.route("/")
@@ -63,30 +66,46 @@ def home():
 @app.route("/question")
 def question():
 
-    return render_template("questions.html")
+    return render_template(
+        "questions.html"
+    )
 
 # =========================
-# RECOMMENDATION YES PAGE
+# RECOMMENDATION YES
 # =========================
 
 @app.route("/Rekomendasi_yes")
 def recommendation_yes():
 
     # =========================
-    # GET USER INPUT
+    # GET DATA FROM QUESTION
     # =========================
 
-    fertilizer = request.args.get("fertilizer")
-
-    fertilizer_frequency = request.args.get(
-        "fertilizer_frequency"
+    fertilizer = request.args.get(
+        "fertilizer",
+        "Tidak Ada Data"
     )
 
-    vitamin = request.args.get("vitamin")
+    fertilizer_frequency = request.args.get(
+        "fertilizer_frequency",
+        "Tidak Ada Data"
+    )
 
-    watering = request.args.get("watering")
+    vitamin = request.args.get(
+        "vitamin",
+        "Tidak Ada Data"
+    )
 
-    notes = request.args.get("notes")
+    watering = request.args.get(
+        "watering",
+        "Tidak Ada Data"
+    )
+
+    # =========================
+    # AI CONFIG
+    # =========================
+
+    USE_AI = False
 
     # =========================
     # AI PROMPT
@@ -94,57 +113,216 @@ def recommendation_yes():
 
     prompt = f"""
 
-    Kamu adalah AI pertanian pintar.
+    Anda adalah AI pertanian modern.
 
-    Berikut kondisi tanah saat ini:
+    Analisis kondisi tanah berikut:
 
-    pH tanah:
-    {sensor_data["ph"]}
+    Data Sensor:
+    - pH tanah: {sensor_data["ph"]}
+    - Suhu: {sensor_data["temperature"]}
+    - Kelembaban tanah: {sensor_data["soil_moisture"]}
+    - Kelembaban udara: {sensor_data["air_humidity"]}
+    - Intensitas cahaya: {sensor_data["light"]}
 
-    Suhu:
-    {sensor_data["temperature"]} derajat celcius
+    Riwayat Perawatan:
+    - Jenis pupuk: {fertilizer}
+    - Intensitas pemupukan: {fertilizer_frequency}
+    - Vitamin tanaman: {vitamin}
+    - Intensitas penyiraman: {watering}
 
-    Kelembapan tanah:
-    {sensor_data["soil_moisture"]}%
-
-    Kelembapan udara:
-    {sensor_data["air_humidity"]}%
-
-    Intensitas cahaya:
-    {sensor_data["light"]}
-
-    Riwayat perawatan pengguna:
-
-    Jenis pupuk:
-    {fertilizer}
-
-    Intensitas pemberian pupuk:
-    {fertilizer_frequency}
-
-    Vitamin tanaman:
-    {vitamin}
-
-    Intensitas penyiraman:
-    {watering}
-
-    Catatan tambahan:
-    {notes}
-
-    Berikan rekomendasi perawatan tanah
-    yang modern, singkat, jelas,
-    mudah dipahami, dan terlihat profesional.
-
-    Gunakan format poin-poin.
-
+    Buat analisis singkat maksimal 3 kalimat.
+    Gunakan bahasa modern dan profesional.
     """
 
     # =========================
     # GEMINI RESPONSE
     # =========================
 
-    response = model.generate_content(prompt)
+    if USE_AI:
 
-    recommendation = response.text
+        try:
+
+            response = model.generate_content(
+                prompt
+            )
+
+            recommendation = response.text
+
+        except Exception as e:
+
+            recommendation = f"""
+            AI recommendation sementara tidak tersedia.
+            Error:
+            {str(e)}
+            """
+
+    else:
+
+        recommendation = """
+        Sistem AI sedang dinonaktifkan sementara 
+        selama proses pengujian dashboard.
+        """
+    # =========================
+    # SMART ACTIONS
+    # =========================
+
+    actions = []
+
+    # =========================
+    # SOIL MOISTURE
+    # =========================
+
+    if sensor_data["soil_moisture"] < 30:
+
+        actions.append({
+
+            "title":
+            "Tingkatkan Kelembapan Tanah",
+
+            "detail":
+            "Lakukan penyiraman tambahan atau gunakan mulsa untuk menjaga kelembapan tanah lebih stabil."
+
+        })
+
+    elif sensor_data["soil_moisture"] > 70:
+
+        actions.append({
+
+            "title":
+            "Perbaiki Drainase Tanah",
+
+            "detail":
+            "Kurangi intensitas penyiraman dan pastikan sistem drainase berjalan baik agar akar tidak membusuk."
+
+        })
+
+    # =========================
+    # TEMPERATURE
+    # =========================
+
+    if sensor_data["temperature"] > 30:
+
+        actions.append({
+
+            "title":
+            "Kurangi Paparan Panas Berlebih",
+
+            "detail":
+            "Gunakan naungan tambahan dan tingkatkan frekuensi penyiraman untuk mengurangi stres panas pada tanaman."
+
+        })
+
+    elif sensor_data["temperature"] < 20:
+
+        actions.append({
+
+            "title":
+            "Jaga Suhu Lingkungan Tanaman",
+
+            "detail":
+            "Pindahkan tanaman ke area yang lebih hangat atau gunakan pelindung untuk menjaga suhu tetap stabil."
+
+        })
+
+    # =========================
+    # SOIL PH
+    # =========================
+
+    if sensor_data["ph"] < 5.5:
+
+        actions.append({
+
+            "title":
+            "Tingkatkan pH Tanah",
+
+            "detail":
+            "Tambahkan dolomit atau kapur pertanian untuk membantu menaikkan pH tanah agar lebih optimal bagi pertumbuhan tanaman."
+
+        })
+
+    elif sensor_data["ph"] > 7.5:
+
+        actions.append({
+
+            "title":
+            "Turunkan pH Tanah",
+
+            "detail":
+            "Gunakan kompos, pupuk organik, atau belerang untuk membantu menurunkan pH tanah secara bertahap."
+
+        })
+
+    # =========================
+    # LIGHT INTENSITY
+    # =========================
+
+    if sensor_data["light"] < 10000:
+
+        actions.append({
+
+            "title":
+            "Tingkatkan Paparan Cahaya",
+
+            "detail":
+            "Pindahkan tanaman ke area yang lebih terbuka agar memperoleh cahaya matahari yang cukup."
+
+        })
+
+    elif sensor_data["light"] > 50000:
+
+        actions.append({
+
+            "title":
+            "Kurangi Intensitas Cahaya Berlebih",
+
+            "detail":
+            "Gunakan paranet atau peneduh untuk mengurangi paparan cahaya langsung yang berlebihan."
+
+        })
+
+    # =========================
+    # AIR HUMIDITY
+    # =========================
+
+    if sensor_data["air_humidity"] < 40:
+
+        actions.append({
+
+            "title":
+            "Tingkatkan Kelembapan Udara",
+
+            "detail":
+            "Lakukan penyemprotan kabut air (misting) atau tambahkan sumber kelembapan di sekitar tanaman."
+
+        })
+
+    elif sensor_data["air_humidity"] > 70:
+
+        actions.append({
+
+            "title":
+            "Tingkatkan Sirkulasi Udara",
+
+            "detail":
+            "Perbaiki ventilasi area tanam untuk mencegah pertumbuhan jamur dan penyakit pada tanaman."
+
+        })
+
+    # =========================
+    # DEFAULT
+    # =========================
+
+    if len(actions) == 0:
+
+        actions.append({
+
+            "title":
+            "Kondisi Tanaman Optimal",
+
+            "detail":
+            "Seluruh parameter lingkungan berada pada kondisi ideal untuk mendukung pertumbuhan tanaman."
+
+        })
 
     # =========================
     # RENDER PAGE
@@ -153,65 +331,42 @@ def recommendation_yes():
     return render_template(
 
         "Rekomendasi_yes.html",
+        
 
         recommendation=recommendation,
 
+        actions=actions,
+
+        fertilizer=fertilizer,
+
+        fertilizer_frequency=fertilizer_frequency,
+
+        vitamin=vitamin,
+
+        watering=watering,
+
         ph=sensor_data["ph"],
+
         temperature=sensor_data["temperature"],
+
         soil_moisture=sensor_data["soil_moisture"],
+
         air_humidity=sensor_data["air_humidity"],
+
         light=sensor_data["light"]
 
     )
 
 # =========================
-# RECOMMENDATION NO PAGE
+# RECOMMENDATION NO
 # =========================
 
 @app.route("/recommendation-no")
 def recommendation_no():
 
-    prompt = f"""
-
-    Kamu adalah AI pertanian pintar.
-
-    Berikut kondisi tanah saat ini:
-
-    pH tanah:
-    {sensor_data["ph"]}
-
-    Suhu:
-    {sensor_data["temperature"]} derajat celcius
-
-    Kelembapan tanah:
-    {sensor_data["soil_moisture"]}%
-
-    Kelembapan udara:
-    {sensor_data["air_humidity"]}%
-
-    Intensitas cahaya:
-    {sensor_data["light"]}
-
-    Pengguna tidak memiliki
-    riwayat perawatan tanah.
-
-    Berikan rekomendasi perawatan tanah
-    yang modern, jelas,
-    singkat, dan profesional.
-
-    Gunakan format poin-poin.
-
-    """
-
-    response = model.generate_content(prompt)
-
-    recommendation = response.text
-
     return render_template(
 
         "Rekomendasi_no.html",
-
-        recommendation=recommendation,
 
         ph=sensor_data["ph"],
         temperature=sensor_data["temperature"],
@@ -223,7 +378,6 @@ def recommendation_no():
 
 # =========================
 # RECEIVE SENSOR DATA
-# FROM ESP32 / ARDUINO
 # =========================
 
 @app.route("/sensor-data", methods=["POST"])
@@ -245,7 +399,8 @@ def receive_sensor_data():
 
     return jsonify({
 
-        "message": "Data received successfully"
+        "message":
+        "Data received successfully"
 
     })
 
@@ -255,4 +410,8 @@ def receive_sensor_data():
 
 if __name__ == "__main__":
 
-    app.run(debug=True)
+    app.run(
+    host="0.0.0.0",
+    port=5000,
+    debug=True
+)
