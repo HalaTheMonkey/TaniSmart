@@ -27,15 +27,15 @@
     }
 
     html{
-        scroll-behavior:smooth;
+      scroll-behavior:smooth;
     }
 
     body{
-    min-height:100vh;
-    background: linear-gradient(135deg, #0f172a, #14213d);
-    color:white;
-    position:relative;
-    overflow-x:hidden;
+      min-height:100vh;
+      background: linear-gradient(135deg, #0f172a, #14213d);
+      color:white;
+      position:relative;
+      overflow-x:hidden;
     }
 
     /* BACKGROUND */
@@ -262,8 +262,7 @@
       font-weight:600;
     }
 
-    .input-group select,
-    .input-group input{
+    .input-group select{
 
       width:100%;
 
@@ -280,8 +279,7 @@
       transition:0.3s;
     }
 
-    .input-group select:focus,
-    .input-group input:focus{
+    .input-group select:focus{
 
       border-color:#22c55e;
 
@@ -388,9 +386,7 @@
     </div>
 
     <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="#">Monitoring</a>
-      <a href="#">About</a>
+      <a href="/">Home</a>
     </div>
 
   </nav>
@@ -399,7 +395,14 @@
 
   <div class="container">
 
-    <div class="question-card">
+    <!-- FORM -->
+
+    <form
+      action="/Rekomendasi_yes"
+      method="GET"
+      id="questionForm"
+      class="question-card"
+    >
 
       <!-- STEP -->
 
@@ -443,18 +446,28 @@
       <div class="input-group">
 
         <label id="inputLabel">
-          Pilih jenis pupuk
+          Pilih jawaban
         </label>
 
         <select id="questionInput">
 
-          <option>
+          <option value="">
             -- Pilih Jawaban --
           </option>
 
         </select>
 
       </div>
+
+      <!-- HIDDEN INPUT -->
+
+      <input type="hidden" name="fertilizer" id="fertilizer">
+
+      <input type="hidden" name="fertilizer_frequency" id="fertilizer_frequency">
+
+      <input type="hidden" name="vitamin" id="vitamin">
+
+      <input type="hidden" name="watering" id="watering">
 
       <!-- BUTTON -->
 
@@ -468,288 +481,252 @@
 
         <button type="button" class="btn next-btn" id="nextBtn">
 
-        Selanjutnya
+          Selanjutnya
 
         </button>
 
       </div>
 
-    </div>
+    </form>
 
   </div>
 
-<!-- SCRIPT -->
+  <!-- SCRIPT -->
 
-<script>
+  <script>
 
-  const questions = [
+    const questions = [
 
-    {
-      title: "Jenis pupuk apa yang biasanya digunakan?",
-      label: "Pilih jenis pupuk",
-      icon: "fa-seedling",
+      {
+        key: "fertilizer",
 
-      options: [
-        "Pupuk Organik",
-        "Pupuk Kompos",
-        "Pupuk NPK",
-        "Pupuk Urea",
-        "Pupuk Kandang"
-      ]
-    },
+        title: "Jenis pupuk apa yang biasanya digunakan?",
 
-    {
-      title: "Seberapa sering melakukan pemupukan?",
-      label: "Pilih intensitas pemupukan",
-      icon: "fa-calendar-days",
+        label: "Pilih jenis pupuk",
 
-      options: [
-        "1 kali seminggu",
-        "2 kali seminggu",
-        "1 kali sebulan",
-        "Jarang",
-        "Tidak tentu"
-      ]
-    },
+        icon: "fa-seedling",
 
-    {
-      title: "Apakah pernah memberikan vitamin tanaman?",
-      label: "Pilih jawaban",
-      icon: "fa-capsules",
+        options: [
+          "Pupuk Organik",
+          "Pupuk Kompos",
+          "Pupuk NPK",
+          "Pupuk Urea",
+          "Pupuk Kandang"
+        ]
+      },
 
-      options: [
-        "Ya",
-        "Tidak"
-      ]
-    },
+      {
+        key: "fertilizer_frequency",
 
-    {
-      title: "Vitamin apa yang digunakan?",
-      label: "Pilih jenis vitamin",
-      icon: "fa-flask",
+        title: "Seberapa sering melakukan pemupukan?",
 
-      options: [
-        "Vitamin B1",
-        "Vitamin A",
-        "ZPT",
-        "Pupuk Cair",
-        "Tidak Menggunakan"
-      ]
-    },
+        label: "Pilih intensitas pemupukan",
 
-    {
-      title: "Bagaimana intensitas penyiraman tanaman?",
-      label: "Pilih intensitas penyiraman",
-      icon: "fa-droplet",
+        icon: "fa-calendar-days",
 
-      options: [
-        "1 kali sehari",
-        "2 kali sehari",
-        "3 kali sehari",
-        "Jarang",
-        "Tidak tentu"
-      ]
+        options: [
+          "1 kali seminggu",
+          "2 kali seminggu",
+          "1 kali sebulan",
+          "Jarang",
+          "Tidak tentu"
+        ]
+      },
+
+      {
+        key: "vitamin",
+
+        title: "Apakah pernah memberikan vitamin tanaman?",
+
+        label: "Pilih jawaban",
+
+        icon: "fa-capsules",
+
+        options: [
+          "Ya",
+          "Tidak"
+        ]
+      },
+
+      {
+        key: "watering",
+
+        title: "Bagaimana intensitas penyiraman tanaman?",
+
+        label: "Pilih intensitas penyiraman",
+
+        icon: "fa-droplet",
+
+        options: [
+          "1 kali sehari",
+          "2 kali sehari",
+          "3 kali sehari",
+          "Jarang",
+          "Tidak tentu"
+        ]
+      }
+
+    ];
+
+    let currentQuestion = 0;
+
+    let answers = [];
+
+    // ELEMENT
+
+    const questionTitle =
+      document.getElementById("questionTitle");
+
+    const inputLabel =
+      document.getElementById("inputLabel");
+
+    const questionInput =
+      document.getElementById("questionInput");
+
+    const stepText =
+      document.getElementById("stepText");
+
+    const progressBar =
+      document.getElementById("progressBar");
+
+    const nextBtn =
+      document.getElementById("nextBtn");
+
+    const backBtn =
+      document.getElementById("backBtn");
+
+    const questionIcon =
+      document.querySelector(".question-icon i");
+
+    const form =
+      document.getElementById("questionForm");
+
+    // LOAD QUESTION
+
+    function loadQuestion(){
+
+      const q = questions[currentQuestion];
+
+      questionTitle.textContent =
+        q.title;
+
+      inputLabel.textContent =
+        q.label;
+
+      stepText.textContent =
+        `Pertanyaan ${currentQuestion + 1} dari ${questions.length}`;
+
+      progressBar.style.width =
+        `${((currentQuestion + 1) / questions.length) * 100}%`;
+
+      questionIcon.className =
+        `fa-solid ${q.icon}`;
+
+      questionInput.innerHTML =
+        `<option value="">-- Pilih Jawaban --</option>`;
+
+      q.options.forEach(option => {
+
+        questionInput.innerHTML +=
+          `<option value="${option}">${option}</option>`;
+
+      });
+
+      if(answers[currentQuestion]){
+
+        questionInput.value =
+          answers[currentQuestion];
+
+      }
+
+      if(currentQuestion === questions.length - 1){
+
+        nextBtn.textContent =
+          "Lihat Rekomendasi";
+
+      }else{
+
+        nextBtn.textContent =
+          "Selanjutnya";
+      }
+
+      // BACK BUTTON
+
+      if(currentQuestion === 0){
+
+        backBtn.innerHTML =
+          "Kembali";
+
+        backBtn.href = "/";
+
+      }else{
+
+        backBtn.innerHTML =
+          "Sebelumnya";
+
+        backBtn.removeAttribute("href");
+      }
+
     }
 
-  ];
+    // NEXT BUTTON
 
-  let currentQuestion = 0;
+    nextBtn.addEventListener("click", () => {
 
-  // =========================
-  // ELEMENT
-  // =========================
+      if(questionInput.value === ""){
 
-  const questionTitle =
-    document.getElementById("questionTitle");
+        alert("Silakan pilih jawaban terlebih dahulu.");
 
-  const inputLabel =
-    document.getElementById("inputLabel");
-
-  const questionInput =
-    document.getElementById("questionInput");
-
-  const stepText =
-    document.getElementById("stepText");
-
-  const progressBar =
-    document.getElementById("progressBar");
-
-  const nextBtn =
-    document.getElementById("nextBtn");
-
-  const backBtn =
-    document.getElementById("backBtn");
-
-  const questionIcon =
-    document.querySelector(".question-icon i");
-
-  // =========================
-  // SAVE ANSWERS
-  // =========================
-
-  let answers = [];
-
-  // =========================
-  // LOAD QUESTION
-  // =========================
-
-  function loadQuestion() {
-
-    const q = questions[currentQuestion];
-
-    // TITLE
-
-    questionTitle.textContent = q.title;
-
-    // LABEL
-
-    inputLabel.textContent = q.label;
-
-    // STEP TEXT
-
-    stepText.textContent =
-      `Pertanyaan ${currentQuestion + 1} dari ${questions.length}`;
-
-    // PROGRESS
-
-    progressBar.style.width =
-      `${((currentQuestion + 1) / questions.length) * 100}%`;
-
-    // ICON
-
-    questionIcon.className =
-      `fa-solid ${q.icon}`;
-
-    // RESET OPTIONS
-
-    questionInput.innerHTML =
-      `<option value="">-- Pilih Jawaban --</option>`;
-
-    // LOAD OPTIONS
-
-    q.options.forEach(option => {
-
-      questionInput.innerHTML +=
-        `<option value="${option}">${option}</option>`;
-
-    });
-
-    // LOAD PREVIOUS ANSWER
-
-    if(answers[currentQuestion]){
-
-      questionInput.value =
-        answers[currentQuestion];
-
-    }
-
-    // BUTTON TEXT
-
-    if(currentQuestion === questions.length - 1){
-
-      nextBtn.textContent =
-        "Lihat Rekomendasi";
-
-    }else{
-
-      nextBtn.textContent =
-        "Selanjutnya";
-    }
-
-    // BACK BUTTON
-
-    if(currentQuestion === 0){
-
-      backBtn.innerHTML =
-        "Kembali";
-
-      backBtn.href = "/";
-
-    }else{
-
-      backBtn.removeAttribute("href");
-
-      backBtn.innerHTML =
-        "Sebelumnya";
-    }
-
-  }
-
-  // =========================
-  // NEXT BUTTON
-  // =========================
-
-  nextBtn.addEventListener("click", () => {
-
-    // VALIDATION
-
-    if(questionInput.value === ""){
-
-      alert("Silakan pilih jawaban terlebih dahulu.");
-
-      return;
-    }
-
-    // SAVE ANSWER
-
-    answers[currentQuestion] =
-      questionInput.value;
-
-    // NEXT QUESTION
-
-    if(currentQuestion < questions.length - 1){
-
-      currentQuestion++;
-
-      loadQuestion();
-
-    }else{
-
-      // SAVE TO LOCAL STORAGE
-
-      localStorage.setItem(
-        "soilAnswers",
-        JSON.stringify(answers)
-      );
-
-      // GO TO RECOMMENDATION
-
-      window.location.href =
-        "/recommendation-yes";
-    }
-
-  });
-
-  // =========================
-  // BACK BUTTON
-  // =========================
-
-  backBtn.addEventListener("click", (e) => {
-
-    if(currentQuestion > 0){
-
-      e.preventDefault();
-
-      // SAVE CURRENT ANSWER
+        return;
+      }
 
       answers[currentQuestion] =
         questionInput.value;
 
-      currentQuestion--;
+      const currentKey =
+        questions[currentQuestion].key;
 
-      loadQuestion();
+      document.getElementById(currentKey).value =
+        questionInput.value;
 
-    }
+      if(currentQuestion < questions.length - 1){
 
-  });
+        currentQuestion++;
 
-  // =========================
-  // INITIAL LOAD
-  // =========================
+        loadQuestion();
 
-  loadQuestion();
+      }else{
 
-</script>
+        form.submit();
+
+      }
+
+    });
+
+    // BACK BUTTON
+
+    backBtn.addEventListener("click", (e) => {
+
+      if(currentQuestion > 0){
+
+        e.preventDefault();
+
+        answers[currentQuestion] =
+          questionInput.value;
+
+        currentQuestion--;
+
+        loadQuestion();
+
+      }
+
+    });
+
+    // INITIAL LOAD
+
+    loadQuestion();
+
+  </script>
 
 </body>
 
