@@ -33,19 +33,14 @@
       overflow-x:hidden;
     }
 
-    /* NAVBAR */
-
     nav{
       width:100%;
       padding:20px 8%;
-
       display:flex;
       justify-content:space-between;
       align-items:center;
-
       background:rgba(255,255,255,0.05);
       backdrop-filter: blur(10px);
-
       border-bottom:1px solid rgba(255,255,255,0.1);
     }
 
@@ -59,30 +54,10 @@
       color:white;
     }
 
-    .nav-links{
-      display:flex;
-      gap:30px;
-    }
-
-    .nav-links a{
-      text-decoration:none;
-      color:white;
-      font-weight:500;
-      transition:0.3s;
-    }
-
-    .nav-links a:hover{
-      color:#7CFFB2;
-    }
-
-    /* MAIN */
-
     .container{
       width:100%;
       padding:50px 8%;
     }
-
-    /* HEADER */
 
     .header{
       text-align:center;
@@ -99,34 +74,21 @@
       font-size:17px;
     }
 
-    /* SENSOR */
-
     .sensor-wrapper{
-
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-
       gap:25px;
-
       margin-bottom:60px;
     }
 
     .sensor-card{
-
       background:rgba(255,255,255,0.08);
-
       border:1px solid rgba(255,255,255,0.1);
-
       backdrop-filter: blur(10px);
-
       border-radius:25px;
-
       padding:30px 20px;
-
       text-align:center;
-
       transition:0.3s;
-
       box-shadow:0 8px 30px rgba(0,0,0,0.2);
     }
 
@@ -137,6 +99,7 @@
     .sensor-card i{
       font-size:38px;
       margin-bottom:20px;
+      color:#7CFFB2;
     }
 
     .sensor-title{
@@ -153,16 +116,11 @@
 
     .sensor-status{
       display:inline-block;
-
       padding:8px 18px;
-
       border-radius:20px;
-
       font-size:14px;
       font-weight:600;
     }
-
-    /* COLORS */
 
     .good{
       background:#dcfce7;
@@ -179,37 +137,26 @@
       color:#be123c;
     }
 
-    /* ANALYSIS */
-
     .analysis-wrapper{
-
       display:grid;
       grid-template-columns:1fr 1.3fr;
-
       gap:35px;
-
       margin-bottom:60px;
     }
 
     .history-card,
     .recommendation-card{
-
       background:white;
       color:#111827;
-
       border-radius:30px;
-
       padding:35px;
-
       box-shadow:0 15px 40px rgba(0,0,0,0.25);
     }
 
     .card-title{
-
       display:flex;
       align-items:center;
       gap:15px;
-
       font-size:24px;
       margin-bottom:30px;
     }
@@ -218,8 +165,6 @@
       color:#16a34a;
     }
 
-    /* HISTORY */
-
     .history-list{
       display:flex;
       flex-direction:column;
@@ -227,13 +172,9 @@
     }
 
     .history-item{
-
       background:#f8fafc;
-
       border-radius:18px;
-
       padding:18px 20px;
-
       border:1px solid #e2e8f0;
     }
 
@@ -248,60 +189,44 @@
       font-weight:600;
     }
 
-    /* RECOMMENDATION */
-
     .recommendation-box{
-
       background:linear-gradient(to right, #dcfce7, #f0fdf4);
-
       border-left:6px solid #16a34a;
-
       padding:25px;
-
       border-radius:20px;
-
       margin-bottom:25px;
     }
 
     .recommendation-box h3{
-
       color:#166534;
       margin-bottom:12px;
       font-size:22px;
     }
 
     .recommendation-box p{
-
       line-height:1.8;
       color:#334155;
       font-size:16px;
+      white-space:pre-line;
     }
 
     .action-list{
-
       display:flex;
       flex-direction:column;
       gap:18px;
     }
 
     .action-item{
-
       display:flex;
       gap:15px;
-
       align-items:flex-start;
-
       background:#f8fafc;
-
       border-radius:18px;
-
       padding:18px;
-
       border:1px solid #e2e8f0;
     }
 
     .action-item i{
-
       color:#16a34a;
       font-size:20px;
       margin-top:3px;
@@ -318,8 +243,6 @@
       line-height:1.6;
     }
 
-    /* BUTTON */
-
     .button-area{
       width:100%;
       display:flex;
@@ -328,32 +251,22 @@
     }
 
     .btn{
-
       padding:18px 35px;
-
       border:none;
-
       border-radius:18px;
-
       background:linear-gradient(to right, #16a34a, #22c55e);
-
       color:white;
-
       font-size:17px;
       font-weight:600;
-
       cursor:pointer;
-
       transition:0.3s;
-
+      text-decoration:none;
       box-shadow:0 10px 25px rgba(34,197,94,0.3);
     }
 
     .btn:hover{
       transform:translateY(-4px);
     }
-
-    /* RESPONSIVE */
 
     @media(max-width:1000px){
 
@@ -367,10 +280,6 @@
 
       .header h1{
         font-size:32px;
-      }
-
-      .nav-links{
-        display:none;
       }
 
       .history-card,
@@ -394,12 +303,6 @@
       Tani<span>Smart</span>
     </div>
 
-    <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="#">Monitoring</a>
-      <a href="#">About</a>
-    </div>
-
   </nav>
 
   <!-- MAIN -->
@@ -416,7 +319,7 @@
 
       <p>
         Rekomendasi dibuat berdasarkan data sensor dan
-        riwayat perawatan tanah yang telah diberikan.
+        riwayat perawatan tanah.
       </p>
 
     </div>
@@ -436,11 +339,21 @@
         </div>
 
         <div class="sensor-value">
-          5.2
+          {{ ph }}
         </div>
 
-        <div class="sensor-status warning">
-          Sedikit Asam
+        <div class="sensor-status
+          {% if ph < 6 %}
+            warning
+          {% else %}
+            good
+          {% endif %}
+        ">
+          {% if ph < 6 %}
+            Sedikit Asam
+          {% else %}
+            Normal
+          {% endif %}
         </div>
 
       </div>
@@ -456,11 +369,21 @@
         </div>
 
         <div class="sensor-value">
-          37°C
+          {{ temperature }}°C
         </div>
 
-        <div class="sensor-status danger">
-          Tinggi
+        <div class="sensor-status
+          {% if temperature > 35 %}
+            danger
+          {% else %}
+            good
+          {% endif %}
+        ">
+          {% if temperature > 35 %}
+            Tinggi
+          {% else %}
+            Normal
+          {% endif %}
         </div>
 
       </div>
@@ -476,11 +399,21 @@
         </div>
 
         <div class="sensor-value">
-          21%
+          {{ soil_moisture }}%
         </div>
 
-        <div class="sensor-status danger">
-          Rendah
+        <div class="sensor-status
+          {% if soil_moisture < 30 %}
+            danger
+          {% else %}
+            good
+          {% endif %}
+        ">
+          {% if soil_moisture < 30 %}
+            Rendah
+          {% else %}
+            Normal
+          {% endif %}
         </div>
 
       </div>
@@ -496,7 +429,7 @@
         </div>
 
         <div class="sensor-value">
-          860
+          {{ light }}
         </div>
 
         <div class="sensor-status good">
@@ -532,7 +465,7 @@
             </div>
 
             <div class="history-value">
-              Pupuk NPK
+              {{ fertilizer }}
             </div>
 
           </div>
@@ -544,7 +477,7 @@
             </div>
 
             <div class="history-value">
-              1 Kali / Minggu
+              {{ fertilizer_frequency }}
             </div>
 
           </div>
@@ -556,7 +489,7 @@
             </div>
 
             <div class="history-value">
-              Vitamin B1
+              {{ vitamin }}
             </div>
 
           </div>
@@ -568,7 +501,7 @@
             </div>
 
             <div class="history-value">
-              1 Kali / Hari
+              {{ watering }}
             </div>
 
           </div>
@@ -585,53 +518,29 @@
 
           <i class="fa-solid fa-leaf"></i>
 
-          <h3>Rekomendasi Sistem</h3>
+          <h3>Rekomendasi AI</h3>
 
         </div>
 
-        <!-- ANALYSIS TEXT -->
+        <!-- AI ANALYSIS -->
 
         <div class="recommendation-box">
 
           <h3>
-            Kondisi Tanah Terdeteksi Kurang Optimal
+            Analisis Sistem
           </h3>
 
           <p>
-            Berdasarkan data sensor dan riwayat perawatan,
-            tanah terdeteksi memiliki tingkat kelembaban rendah
-            dengan suhu lingkungan yang cukup tinggi.
-            Penggunaan pupuk NPK masih cukup baik,
-            namun intensitas penyiraman perlu ditingkatkan
-            agar kondisi tanah tetap stabil dan tanaman
-            dapat tumbuh dengan optimal.
+            {{ recommendation }}
           </p>
 
         </div>
 
-        <!-- ACTION -->
+        <!-- ACTIONS -->
 
         <div class="action-list">
 
-          <div class="action-item">
-
-            <i class="fa-solid fa-circle-check"></i>
-
-            <div>
-
-              <h4>
-                Tingkatkan Penyiraman
-              </h4>
-
-              <p>
-                Disarankan melakukan penyiraman
-                sebanyak 2 kali sehari pada pagi
-                dan sore hari.
-              </p>
-
-            </div>
-
-          </div>
+          {% for action in actions %}
 
           <div class="action-item">
 
@@ -640,38 +549,18 @@
             <div>
 
               <h4>
-                Tambahkan Pupuk Organik
+                {{ action.title }}
               </h4>
 
               <p>
-                Pupuk organik membantu menjaga
-                kelembaban tanah dan memperbaiki
-                struktur tanah.
+                {{ action.detail }}
               </p>
 
             </div>
 
           </div>
 
-          <div class="action-item">
-
-            <i class="fa-solid fa-circle-check"></i>
-
-            <div>
-
-              <h4>
-                Kurangi Paparan Panas Berlebih
-              </h4>
-
-              <p>
-                Gunakan peneduh atau lakukan
-                penyiraman tambahan saat cuaca
-                terlalu panas.
-              </p>
-
-            </div>
-
-          </div>
+          {% endfor %}
 
         </div>
 
@@ -683,11 +572,11 @@
 
     <div class="button-area">
 
-      <button class="btn">
+      <a href="/" class="btn">
 
         Cek Ulang Kondisi Tanah
 
-      </button>
+      </a>
 
     </div>
 
